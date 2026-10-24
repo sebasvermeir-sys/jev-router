@@ -189,25 +189,32 @@ export const register: Register = (on, options) => {
     return next(e)
   }).catch(($, e, next) => next(e))
 
+  // The chat's size as the last model request of the main loop saw it. A
+  // turn's own usage adds up every request in it, so it overstates the chat.
+  let lastStepTokens: number | null = null
+
   // Auto mode: send every request of the main turn to the routed model
-  if (mode === 'auto') {
-    on('turn.step', async function* ($, e, next) {
-      const target = route
-      if (e.agentId !== undefined || target === null || tierOf(e.model) === target) {
-        return yield* next(e)
-      }
-      // Haiku takes no effort setting; the bigger models keep the session's
-      const effort = target === 'haiku' ? undefined : e.effort
-      return yield* next({ ...e, model: MODEL_ID[target], effort })
-    })
-  }
+  on('turn.step', async function* ($, e, next) {
+    if (e.agentId !== undefined) return yield* next(e)
+    const target = mode === 'auto' ? route : null
+    // Haiku takes no effort setting; the bigger models keep the session's
+    const step =
+      target === null || tierOf(e.model) === target
+        ? e
+        : { ...e, model: MODEL_ID[target], effort: target === 'haiku' ? undefined : e.effort }
+    const result = yield* next(step)
+    const u = result.usage
+    if (u) lastStepTokens = u.input_tokens + u.cache_read_input_tokens + u.cache_creation_input_tokens
+    return result
+  })
 
   // Remember how big the chat is, when it last ran and on which model
   on('turn.complete', async ($, e, next) => {
     const result = await next(e)
     const u = result.usage
     if (u) {
-      const contextTokens = u.input_tokens + u.cache_read_input_tokens + u.cache_creation_input_tokens
+      const contextTokens =
+        lastStepTokens ?? u.input_tokens + u.cache_read_input_tokens + u.cache_creation_input_tokens
       const at = await $.clock.now()
       await update($, lastTurn, () => ({ at, contextTokens, tier: tierOf(u.model) }))
     }

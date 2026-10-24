@@ -1,6 +1,6 @@
 {
   "name": "jev-router",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Asks TypeSafe Jev which Claude model each prompt needs, then routes the turn to it (auto) or shows advice (advise).",
   "license": "MIT",
   "types": "./types/index.d.ts",
