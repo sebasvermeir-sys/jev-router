@@ -82,3 +82,16 @@ Get a key at https://console.typesafe.ai/.
 
 With this mod on, every prompt you type is also sent to TypeSafe. Turn the mod
 off for sensitive work.
+
+## jev-monitor (optional companion)
+
+A collapsible band above the prompt that shows jev-router at work, read from
+`~/.jev/router-log.jsonl` (local only, no network):
+
+- **Collapsed:** `▸ Jev`, the mode, and the last pick → model used, e.g. `Haiku 92 % → Opus`
+- **Expanded** (click `▸ Jev` or type `/jev`): last prompt in detail, the Haiku / Sonnet / Opus
+  split of Jev's picks, model switches, average latency, and the last 12 prompts.
+
+It draws above the other plugins' bands (e.g. Ribbon) without hiding them.
+
+Install: `/plugin install jev-monitor@jev-router` (desktop app: + → Plugins).

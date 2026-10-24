@@ -1,5 +1,8 @@
 {
   "name": "jev-router",
   "owner": { "name": "sebasvermeir-sys" },
-  "plugins": [{ "name": "jev-router", "source": "./" }]
+  "plugins": [
+    { "name": "jev-router", "source": "./" },
+    { "name": "jev-monitor", "source": "./jev-monitor" }
+  ]
 }
