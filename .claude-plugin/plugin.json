@@ -1,0 +1,20 @@
+{
+  "name": "jev-router",
+  "version": "0.2.0",
+  "description": "Asks TypeSafe Jev which Claude model each prompt needs, then routes the turn to it (auto) or shows advice (advise).",
+  "license": "MIT",
+  "types": "./types/index.d.ts",
+  "userConfig": {
+    "mode": {
+      "type": "string",
+      "title": "Mode",
+      "description": "auto routes each turn to Jev's pick when switching is cheap; advise only shows the advice with a switch button; off does nothing.",
+      "default": "auto",
+      "options": [
+        "auto",
+        "advise",
+        "off"
+      ]
+    }
+  }
+}
