@@ -1,1 +1,1 @@
-{ "name": "jev-monitor", "version": "0.1.0", "description": "Panneau en direct du routage Jev : dernier choix, historique, répartition des modèles et latence.", "types": "./types/index.d.ts" }
+{ "name": "jev-monitor", "version": "0.1.1", "description": "Panneau en direct du routage Jev : dernier choix, historique, répartition des modèles et latence.", "types": "./types/index.d.ts" }

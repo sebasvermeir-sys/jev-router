@@ -30,7 +30,11 @@ function parse(text: string): Entry[] {
   for (const line of text.split('\n')) {
     if (!line.trim()) continue
     try {
-      out.push(JSON.parse(line) as Entry)
+      const row = JSON.parse(line)
+      // jev-router also logs timeouts and errors (no pick): those are not picks
+      if (typeof row.pick !== 'string') continue
+      // rows from jev-router 0.1 have no route: nothing was switched then
+      out.push({ ...row, route: row.route ?? null } as Entry)
     } catch {
       // a line being written: skip it, the next poll reads it whole
     }
